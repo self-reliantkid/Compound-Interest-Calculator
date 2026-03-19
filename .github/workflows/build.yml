@@ -1,5 +1,5 @@
 name: Build Mac App
-on: [push] # This triggers the build every time you upload code
+on: [push]
 
 jobs:
   build-mac:
@@ -17,10 +17,12 @@ jobs:
         run: pip install pyinstaller
 
       - name: Create Executable
-        run: pyinstaller --onefile --windowed main.py
+        # We changed main.py to compound_interest.py here
+        run: pyinstaller --onefile --windowed compound_interest.py
 
       - name: Upload Finished File
         uses: actions/upload-artifact@v4
         with:
-          name: mac-executable-folder  # This is the name of the zip file
-          path: dist/main             # This grabs the finished file
+          name: mac-interest-calculator
+          # PyInstaller puts the result in dist/ using the same name as the script
+          path: dist/compound_interest
