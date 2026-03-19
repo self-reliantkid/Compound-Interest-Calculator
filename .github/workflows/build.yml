@@ -1,1 +1,26 @@
+name: Build Mac App
+on: [push] # This triggers the build every time you upload code
 
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Create Executable
+        run: pyinstaller --onefile --windowed main.py
+
+      - name: Upload Finished File
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-executable-folder  # This is the name of the zip file
+          path: dist/main             # This grabs the finished file
