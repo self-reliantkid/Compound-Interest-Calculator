@@ -23,7 +23,7 @@ elif [ "$LATEST" != "$CURRENT_VERSION" ]; then
     echo "------------------------------------------"
     echo "Opening download page..."
     # This opens the Mac's browser to your releases page
-    open "https://github.com/YOUR_USERNAME/YOUR_REPO/releases/latest"
+    open "https://github.com/self-reliantkid/Compound-Interest-Calculator/releases/latest"
     echo "------------------------------------------"
     sleep 2
 else
