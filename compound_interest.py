@@ -3,12 +3,18 @@
 #Show both interest earned and amount
 #Allowing different compounding frequency
 
+#v1.1 - Error handling issues addressed (Mar 20, 2026 - 01:44)
+
 
 #Mar 14, 2026 - 03:39
 def calc_interest():
-    principal = int(input("Enter principal amount: "))
-    time = int(input("Enter time(in years): "))
-    rate = float(input("Enter rate(%): "))
+    try:
+        principal = float(input("Enter principal amount: "))
+        time = int(input("Enter time(in years): "))
+        rate = float(input("Enter rate(%): "))
+    except ValueError:
+        print("Invalid input! Kindly try again\n")
+        calc_interest()
 
     print("\nSelect compounding frequency:")
     print("1. Annually")
@@ -17,21 +23,25 @@ def calc_interest():
     print("4. Monthly") 
     print("5. Daily")
 
-    cf = int(input("\nYour choice: "))
-
     n = 1
 
     try:
-        if cf == 2:
-            n = 2
-        elif cf == 3:
-            n = 4
-        elif cf == 4:
-            n = 12
-        elif cf == 5:
-            n = 365
+        cf = int(input("\nYour choice: "))
+        if cf in range(1, 6):
+            if cf == 2:
+                n = 2
+            elif cf == 3:
+                n = 4
+            elif cf == 4:
+                n = 12
+            elif cf == 5:
+                n = 365
+        else:
+            print("Choice not in menu\n")
+            calc_interest()
     except ValueError:
-        print("Invalid input!")
+        print("Invalid input! Kindly try again\n")
+        calc_interest()
 
     print("")
     t = 1
@@ -42,6 +52,12 @@ def calc_interest():
 
         print(f"Year {t}: Interest earned = GHc{period_interest:.2f}, Total amount = GHc{amount:.2f}")
         t += 1
+
+    end = input("\nPress ENTER to continue or type quit to end the program\n\n")
+    if end.lower() == "quit":
+        print("Program quit successful!")
+        return
+    calc_interest()
 
 
 if __name__ == "__main__":
