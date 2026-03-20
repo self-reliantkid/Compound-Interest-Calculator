@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Get the directory where this .command file lives
+DIR="$(cd "$(dirname "$0")" && pwd)"
+APP="$DIR/compound_interest"
+
+# Remove macOS quarantine flag (bypasses Gatekeeper prompt)
+xattr -dr com.apple.quarantine "$APP" 2>/dev/null
+
+# Make sure it's executable
+chmod +x "$APP"
+
+# Run the app
+"$APP"
+
+# Keep Terminal window open if the app crashes or exits
+echo ""
+echo "Press any key to close..."
+read -n 1
