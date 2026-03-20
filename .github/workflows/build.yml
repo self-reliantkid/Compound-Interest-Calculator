@@ -1,11 +1,42 @@
-- name: Create Executable
+name: Build Mac App
+on:
+  push:
+    tags:
+      - 'v*' # This triggers the build when you create a tag like v1.1, v1.2, etc.
+
+permissions:
+  contents: write
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Create Executable
+        # --onefile makes it a single app; --windowed keeps the terminal from popping up twice
         run: pyinstaller --onefile --windowed compound_interest.py
 
-      - name: Upload Finished File
-        uses: actions/upload-artifact@v4
+      - name: Prepare Release Folder
+        run: |
+          mkdir -p dist/release
+          cp dist/compound_interest dist/release/
+          cp run.command dist/release/
+          # Zip them together so your friend only has to download one file
+          cd dist/release && zip -r ../../interest_calculator_mac.zip .
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: mac-interest-calculator
-          # This tells GitHub to grab the app AND the script
-          path: |
-            dist/compound_interest
-            run.command
+          files: interest_calculator_mac.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
