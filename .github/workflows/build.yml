@@ -1,28 +1,11 @@
-name: Build Mac App
-on: [push]
-
-jobs:
-  build-mac:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install PyInstaller
-        run: pip install pyinstaller
-
-      - name: Create Executable
-        # We changed main.py to compound_interest.py here
+- name: Create Executable
         run: pyinstaller --onefile --windowed compound_interest.py
 
       - name: Upload Finished File
         uses: actions/upload-artifact@v4
         with:
           name: mac-interest-calculator
-          # PyInstaller puts the result in dist/ using the same name as the script
-          path: dist/compound_interest
+          # This grabs BOTH the app and the helper script
+          path: |
+            dist/compound_interest
+            run.command
