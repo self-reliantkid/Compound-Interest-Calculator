@@ -2,23 +2,37 @@
 # Move to the folder where this script is located
 cd "$(dirname "$0")"
 
-echo "------------------------------------------"
-echo "   Checking for Updates on GitHub...     "
-echo "------------------------------------------"
+# --- SET YOUR CURRENT VERSION HERE ---
+CURRENT_VERSION="v1.2" 
 
-# This command fetches the latest version tag from your GitHub API
-# Replace 'YOUR_USERNAME' and 'YOUR_REPO' with your actual details
-LATEST_VERSION=$(curl -s https://api.github.com/repos/self-reliantkid/Compound-Interest-Calculator/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+clear
+echo "=========================================="
+echo "    Interest Calculator: $CURRENT_VERSION"
+echo "=========================================="
 
-echo "Latest Version available: $LATEST_VERSION"
-echo "Launching your local app..."
-echo "------------------------------------------"
+# Fetch the latest version tag from GitHub
+# Replace YOUR_USERNAME and YOUR_REPO below!
+LATEST=$(curl -s https://api.github.com/repos/self-reliantkid/Compound-Interest-Calculator/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
-# 1. Clear the "damaged" flag
+if [ -z "$LATEST" ]; then
+    echo "[!] Could not check for updates (Offline)."
+elif [ "$LATEST" != "$CURRENT_VERSION" ]; then
+    echo "[UPDATE AVAILABLE]"
+    echo "Current: $CURRENT_VERSION"
+    echo "Latest:  $LATEST"
+    echo "------------------------------------------"
+    echo "Opening download page..."
+    # This opens the Mac's browser to your releases page
+    open "https://github.com/YOUR_USERNAME/YOUR_REPO/releases/latest"
+    echo "------------------------------------------"
+    sleep 2
+else
+    echo "[✓] You are running the latest version."
+fi
+
+echo "Launching app..."
+
+# The "Magic Fix" for the 'Damaged' error
 xattr -cr compound_interest
-
-# 2. Ensure the app has permission
 chmod +x compound_interest
-
-# 3. Launch the app
 ./compound_interest
