@@ -58,4 +58,4 @@ You only need to do this once. After that, double-clicking works normally.
 
 ---
 
-Made with ❤️ — reach out if you run into any issues!
+Reach out if you run into any issues!
