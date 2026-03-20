@@ -5,7 +5,7 @@
         uses: actions/upload-artifact@v4
         with:
           name: mac-interest-calculator
-          # This grabs BOTH the app and the helper script
+          # This tells GitHub to grab the app AND the script
           path: |
             dist/compound_interest
             run.command
