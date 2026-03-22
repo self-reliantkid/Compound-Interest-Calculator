@@ -1,12 +1,30 @@
-name: Build macOS CLI
+name: Build CLI - All Platforms
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build-macos:
-    runs-on: macos-latest
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            name: mac
+            binary: compound_interest
+            launcher: run.command
+
+          - os: ubuntu-latest
+            name: linux
+            binary: compound_interest
+            launcher: run.sh
+
+          - os: windows-latest
+            name: windows
+            binary: compound_interest.exe
+            launcher: run.bat
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -23,15 +41,29 @@ jobs:
       - name: Build executable
         run: pyinstaller --onefile compound_interest.py
 
-      - name: Stage release folder
+      - name: Stage release (macOS/Linux)
+        if: matrix.os != 'windows-latest'
         run: |
           mkdir release
-          cp dist/compound_interest release/
-          cp run.command release/
-          chmod +x release/run.command   # pre-set permissions in the zip
+          cp dist/${{ matrix.binary }} release/
+          cp ${{ matrix.launcher }} release/
+          cp README.md release/
+          chmod +x release/${{ matrix.launcher }}
+          chmod +x release/${{ matrix.binary }}
+          cd release && zip -r ../compound-interest-${{ matrix.name }}.zip . --symlinks
+
+      - name: Stage release (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path release
+          Copy-Item dist\${{ matrix.binary }} release\
+          Copy-Item ${{ matrix.launcher }} release\
+          Copy-Item README.md release\
+          Compress-Archive -Path release\* -DestinationPath compound-interest-${{ matrix.name }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: compound-interest-mac
-          path: release/
+          name: compound-interest-${{ matrix.name }}
+          path: compound-interest-${{ matrix.name }}.zip
