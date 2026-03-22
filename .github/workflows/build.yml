@@ -38,8 +38,17 @@ jobs:
       - name: Install PyInstaller
         run: pip install pyinstaller
 
+      - name: Install system dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install -y binutils
+
+      - name: Disable Windows Defender (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: Set-MpPreference -DisableRealtimeMonitoring $true
+
       - name: Build executable
-        run: pyinstaller --onefile compound_interest.py
+        run: python -m PyInstaller --onefile compound_interest.py
 
       - name: Stage release (macOS/Linux)
         if: matrix.os != 'windows-latest'
@@ -52,18 +61,14 @@ jobs:
           chmod +x release/${{ matrix.binary }}
           cd release && zip -r ../compound-interest-${{ matrix.name }}.zip . --symlinks
 
+      - name: Fix line endings (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: (Get-Content run.bat -Raw) -replace "`n", "`r`n" | Set-Content run.bat
+
       - name: Stage release (Windows)
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path release
-          Copy-Item dist\${{ matrix.binary }} release\
-          Copy-Item ${{ matrix.launcher }} release\
-          Copy-Item README.md release\
-          Compress-Archive -Path release\* -DestinationPath compound-interest-${{ matrix.name }}.zip
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: compound-interest-${{ matrix.name }}
-          path: compound-interest-${{ matrix.name }}.zip
+          Copy-Item dist\${{ matrix.bin
