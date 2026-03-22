@@ -4,21 +4,11 @@ A simple command-line app for calculating compound interest. No installation req
 
 ---
 
-## What's Inside
-
-```
-compound-interest-mac/
-├── compound_interest     ← the app
-└── run.command           ← double-click this to launch
-```
-
----
-
 ## How to Run
 
-1. **Download** the zip file and unzip it
-2. **Keep both files in the same folder** — the `run.command` script needs to find `compound_interest` next to it
-3. **Double-click** `run.command`
+1. **Download** the zip file for your operating system and unzip it
+2. **Keep both files in the same folder** — the `run` script needs to find `compound_interest` next to it
+3. **Double-click** `run.command` or `run.sh` or `run.bat`
 
 A Terminal window will open and the app will start automatically.
 
@@ -37,25 +27,5 @@ If you see a popup saying *"run.command can't be opened because it is from an un
 You only need to do this once. After that, double-clicking works normally.
 
 > The app itself (`compound_interest`) is handled silently in the background — you won't see any popups for it.
-
----
-
-## Troubleshooting
-
-**Terminal opens and closes immediately**
-- Make sure both files are in the same folder and haven't been separated.
-
-**"Permission denied" error**
-- Open Terminal, navigate to the folder, and run:
-  ```bash
-  chmod +x run.command
-  chmod +x compound_interest
-  ```
-  Then try double-clicking `run.command` again.
-
-**Nothing happens when I double-click**
-- Right-click `run.command` → Open With → Terminal
-
----
 
 Reach out if you run into any issues!
