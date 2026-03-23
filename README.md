@@ -1,6 +1,6 @@
 # Compound Interest Calculator
 
-A simple command-line app for calculating compound interest. No installation required — just download and run.
+A simple command-line app for calculating compound interest. The app features a five-option menu which enables users to calculate compound interest, understand how compound interest works, understanding how to use the app, checking for latest updates and quitting the app. The app is also able to compound based on certain time frequencies and shows the snowball effect through yearly breakdowns.
 
 ---
 
@@ -13,19 +13,5 @@ A simple command-line app for calculating compound interest. No installation req
 A Terminal window will open and the app will start automatically.
 
 ---
-
-## First Time Only — One Extra Step
-
-Because this app isn't from the Mac App Store, macOS may block `run.command` the very first time you open it.
-
-If you see a popup saying *"run.command can't be opened because it is from an unidentified developer"*:
-
-1. **Right-click** (or Control + click) on `run.command`
-2. Select **Open**
-3. Click **Open** again in the popup
-
-You only need to do this once. After that, double-clicking works normally.
-
-> The app itself (`compound_interest`) is handled silently in the background — you won't see any popups for it.
 
 Reach out if you run into any issues!
