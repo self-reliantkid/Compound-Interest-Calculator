@@ -310,7 +310,7 @@ def delay(i=2):
         time.sleep(0.6)
         print(".", end="")
         sys.stdout.flush()
-    print(f"{'\n'*i}")
+    print('\n' * i)
 
 
 
